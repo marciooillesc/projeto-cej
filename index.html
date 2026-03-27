@@ -536,12 +536,38 @@
       }
     }
 
+    const loaderMessages = [
+      'Conectando ao sistema',
+      'Verificando conteúdo publicado',
+      'Organizando destaques da página',
+      'Montando cards e atalhos',
+      'Finalizando interface'
+    ];
+    let loaderMessageIndex = 0;
+    let loaderTicker = null;
+
+    function startLoaderTicker() {
+      if (loaderTicker) return;
+      loaderTicker = setInterval(() => {
+        loaderMessageIndex = (loaderMessageIndex + 1) % loaderMessages.length;
+        setLoaderStatus(loaderMessages[loaderMessageIndex]);
+      }, 1200);
+    }
+
+    function stopLoaderTicker() {
+      if (loaderTicker) {
+        clearInterval(loaderTicker);
+        loaderTicker = null;
+      }
+    }
+
     function setLoaderStatus(text) {
       const el = document.getElementById('loaderStatus');
       if (el) el.textContent = text;
     }
 
     function hideLoader() {
+      stopLoaderTicker();
       const loader = document.getElementById('loader');
       const siteWrap = document.getElementById('siteWrap');
       if (siteWrap) siteWrap.style.display = 'block';
@@ -584,6 +610,7 @@
     }
 
     function hideLoader() {
+      stopLoaderTicker();
       document.getElementById('loader').style.display = 'none';
       document.getElementById('siteWrap').style.display = 'block';
     }
