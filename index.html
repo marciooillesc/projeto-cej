@@ -90,18 +90,146 @@
       border-color:transparent;
     }
     /* Botão admin discreto no menu */
-    .btn-admin {
+    .btn-admin{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
       padding:10px 14px;
       border-radius:999px;
       border:1px solid rgba(251,191,36,.3);
       background:rgba(251,191,36,.08);
-      font-size:13px;
       color:#fde68a;
+      font-size:13px;
+      font-weight:700;
       cursor:pointer;
       text-decoration:none;
+      transition:transform .18s ease, background .18s ease, opacity .18s ease;
     }
-    .btn-admin:hover {
+    .btn-admin:hover{
       background:rgba(251,191,36,.16);
+      transform:translateY(-1px);
+      opacity:.96;
+    }
+    .admin-modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,.72);
+      backdrop-filter:blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:20px;
+    }
+    .admin-modal-overlay.show{
+      display:flex;
+    }
+    .admin-modal-card{
+      position:relative;
+      width:min(100%,460px);
+      background:linear-gradient(180deg,#0f172a,#111827);
+      color:#e5eefc;
+      border:1px solid rgba(96,165,250,.2);
+      border-radius:22px;
+      padding:28px 24px 24px;
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      animation:adminFadeIn .18s ease;
+    }
+    @keyframes adminFadeIn{
+      from{opacity:0;transform:translateY(8px) scale(.98)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+    .admin-close{
+      position:absolute;
+      top:12px;
+      right:12px;
+      width:36px;
+      height:36px;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      font-size:22px;
+      cursor:pointer;
+    }
+    .admin-close:hover{
+      background:rgba(255,255,255,.12);
+    }
+    .admin-modal-header{
+      text-align:center;
+      margin-bottom:20px;
+    }
+    .admin-modal-icon{
+      width:60px;
+      height:60px;
+      margin:0 auto 14px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:28px;
+      background:linear-gradient(135deg,#2563eb,#60a5fa);
+      box-shadow:0 14px 30px rgba(37,99,235,.28);
+    }
+    .admin-modal-header h3{
+      margin:0 0 8px;
+      font-size:24px;
+      color:#fff;
+    }
+    .admin-modal-header p{
+      margin:0;
+      font-size:14px;
+      line-height:1.5;
+      color:#9fb2cf;
+    }
+    .admin-form{
+      display:grid;
+      gap:10px;
+    }
+    .admin-form label{
+      font-size:13px;
+      font-weight:700;
+      color:#dbeafe;
+    }
+    .admin-input{
+      width:100%;
+      min-height:48px;
+      border-radius:12px;
+      border:1px solid rgba(96,165,250,.22);
+      background:#0b1220;
+      color:#fff;
+      padding:0 14px;
+      font-size:15px;
+      outline:none;
+    }
+    .admin-input:focus{
+      border-color:#60a5fa;
+      box-shadow:0 0 0 3px rgba(96,165,250,.15);
+    }
+    .admin-erro{
+      background:rgba(239,68,68,.12);
+      border:1px solid rgba(239,68,68,.24);
+      color:#fecaca;
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:13px;
+      line-height:1.45;
+    }
+    .admin-submit{
+      margin-top:6px;
+      min-height:48px;
+      border:none;
+      border-radius:12px;
+      background:linear-gradient(135deg,#2563eb,#60a5fa);
+      color:#fff;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(37,99,235,.25);
+      transition:transform .18s ease, opacity .18s ease;
+    }
+    .admin-submit:hover{
+      transform:translateY(-1px);
+      opacity:.96;
     }
     .hero { padding:42px 0 22px; }
     .hero-grid {
@@ -487,11 +615,37 @@
     </footer>
   </div>
 
+  <div id="adminModal" class="admin-modal-overlay" onclick="fecharModalAdmin(event)">
+    <div class="admin-modal-card">
+      <button class="admin-close" onclick="fecharModalAdmin()">×</button>
+      <div class="admin-modal-header">
+        <div class="admin-modal-icon">🔐</div>
+        <h3>Acesso ao Painel</h3>
+        <p>Digite seu e-mail autorizado para abrir o painel administrativo.</p>
+      </div>
+      <div class="admin-form">
+        <label for="adminEmail">E-mail</label>
+        <input
+          type="email"
+          id="adminEmail"
+          class="admin-input"
+          placeholder="exemplo@gmail.com"
+          autocomplete="email"
+        >
+        <div id="adminErro" class="admin-erro" style="display:none;"></div>
+        <button class="admin-submit" onclick="entrarAdmin()">
+          Entrar no Painel
+        </button>
+      </div>
+    </div>
+  </div>
+
+
   <script>
     // ✅ URL da API pública (Projeto 1 — code.gs)
     const API_URL = 'https://script.google.com/macros/s/AKfycbyjWALebfzJTxT1KlLtCEr9y-B-oMeBXBOCasshRF3j4NDb6ct98sAuZN6y_cozZyR_4Q/exec';
 
-    // ✅ URL do painel admin (Projeto 2 — code_admin.gs)
+    // ✅ URL base do painel admin (Projeto 2 — code_admin.gs)
     const ADMIN_URL = 'https://script.google.com/macros/s/AKfycbxeMFW3kxDbGWoMX1rA3j2UA_5kC4hhd3P7iJbUvF3poxiujiuibtwxOCjHfmQySX6dGg/exec?painel=admin';
 
     function norm(v) {
@@ -636,8 +790,8 @@
             return `<a href="${escapeHtml(ancora)}">${escapeHtml(nome)}</a>`;
           }).join('');
 
-        // ✅ Botão admin adicionado ao final do menu
-        const btnAdmin = `<a class="btn-admin" href="${escapeHtml(ADMIN_URL)}" target="_blank" rel="noopener noreferrer">⚙ Admin</a>`;
+        // ✅ Botão admin com modal de e-mail
+        const btnAdmin = `<button class="btn-admin" type="button" onclick="abrirModalAdmin()">⚙ Admin</button>`;
 
         topMenu.innerHTML = itensMenu + btnAdmin;
       }
@@ -649,6 +803,71 @@
 
       return config;
     }
+
+
+    function abrirModalAdmin() {
+      const modal = document.getElementById('adminModal');
+      const erroBox = document.getElementById('adminErro');
+      const emailInput = document.getElementById('adminEmail');
+
+      if (erroBox) {
+        erroBox.style.display = 'none';
+        erroBox.textContent = '';
+      }
+      if (emailInput) emailInput.value = '';
+
+      modal.classList.add('show');
+
+      setTimeout(() => {
+        if (emailInput) emailInput.focus();
+      }, 50);
+    }
+
+    function fecharModalAdmin(event) {
+      const modal = document.getElementById('adminModal');
+      if (event && event.target && event.target.id !== 'adminModal') return;
+      modal.classList.remove('show');
+    }
+
+    function entrarAdmin() {
+      const emailInput = document.getElementById('adminEmail');
+      const erroBox = document.getElementById('adminErro');
+      const email = String(emailInput.value || '').trim().toLowerCase();
+
+      erroBox.style.display = 'none';
+      erroBox.textContent = '';
+
+      if (!email) {
+        erroBox.textContent = 'Digite seu e-mail para continuar.';
+        erroBox.style.display = 'block';
+        emailInput.focus();
+        return;
+      }
+
+      const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!emailValido) {
+        erroBox.textContent = 'Digite um e-mail válido.';
+        erroBox.style.display = 'block';
+        emailInput.focus();
+        return;
+      }
+
+      const urlFinal = ADMIN_URL + '&email=' + encodeURIComponent(email);
+      window.open(urlFinal, '_blank', 'noopener,noreferrer');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      const modal = document.getElementById('adminModal');
+      if (!modal || !modal.classList.contains('show')) return;
+
+      if (e.key === 'Escape') {
+        fecharModalAdmin();
+      }
+
+      if (e.key === 'Enter') {
+        entrarAdmin();
+      }
+    });
 
     (async function() {
       const bannersWrap = document.getElementById('bannersWrap');
