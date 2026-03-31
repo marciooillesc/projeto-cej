@@ -128,10 +128,14 @@ export async function publicarConteudo(dados) {
     throw new Error('API_URL não configurada.');
   }
 
+  // Apps Script exige Content-Type: text/plain para evitar preflight CORS.
+  // O doPost lê e.postData.contents que continua sendo JSON válido.
+  // redirect: 'follow' é obrigatório — o Apps Script redireciona antes de responder.
   const resposta = await fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(dados),
+    redirect: 'follow',
   });
 
   if (!resposta.ok) {
@@ -143,7 +147,6 @@ export async function publicarConteudo(dados) {
     throw new Error(json.mensagem || 'Erro desconhecido ao publicar.');
   }
 
-  // Invalida o cache para a próxima busca ir à API
   limparCache();
   return json;
 }
@@ -176,8 +179,9 @@ export async function removerConteudo(titulo, professor) {
 
   const resposta = await fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ acao: 'remover', titulo, professor }),
+    redirect: 'follow',
   });
 
   if (!resposta.ok) {
