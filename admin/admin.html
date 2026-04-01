@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+</head>
+<body>
+
+<h2>Painel Admin</h2>
+
+<div id="lista"></div>
+
+<script type="module">
+import { supabase } from "../modules/supabase.js";
+
+async function carregar() {
+  const { data } = await supabase
+    .from("usuarios")
+    .select("*")
+    .eq("status", "pendente");
+
+  const div = document.getElementById("lista");
+  div.innerHTML = "";
+
+  data.forEach(u => {
+    const el = document.createElement("div");
+
+    el.innerHTML = `
+      ${u.nome} (${u.tipo})
+      <button onclick="aprovar('${u.id}')">Aprovar</button>
+    `;
+
+    div.appendChild(el);
+  });
+}
+
+window.aprovar = async (id) => {
+  await supabase
+    .from("usuarios")
+    .update({ status: "aprovado" })
+    .eq("id", id);
+
+  carregar();
+};
+
+carregar();
+</script>
+
+</body>
+</html>
