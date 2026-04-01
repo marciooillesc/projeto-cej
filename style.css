@@ -2166,3 +2166,215 @@ body {
 }
 .sidebar__item--sair { color: var(--danger); }
 .sidebar__item--sair:hover { background: rgba(248,113,113,0.08); }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ÁREA ACADÊMICA — PROFESSOR & ALUNO
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Stats */
+.prof-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+.prof-stat {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+}
+.prof-stat__num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  color: var(--primary);
+  line-height: 1;
+}
+.prof-stat__label {
+  font-size: .78rem;
+  color: var(--text-2);
+}
+
+/* Tabs */
+.prof-tabs {
+  display: flex;
+  gap: .4rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.prof-tab {
+  padding: .45rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: .85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.prof-tab:hover { background: var(--bg-2); color: var(--text); }
+.prof-tab.ativo { background: var(--primary-dim); color: var(--primary); border-color: var(--border-strong); }
+
+/* Painéis */
+.prof-painel { display: none; }
+.prof-painel.ativo { display: block; }
+
+/* Filtros */
+.filtros-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+.filtro-chip {
+  padding: .35rem .85rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 500;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.filtro-chip:hover { border-color: var(--border-strong); color: var(--text); }
+.filtro-chip.ativo { background: var(--primary-dim); color: var(--primary); border-color: var(--primary); }
+
+/* Botão danger ghost */
+.btn--danger-ghost {
+  color: var(--danger);
+  background: transparent;
+  border: 1px solid transparent;
+}
+.btn--danger-ghost:hover { background: rgba(248,113,113,.1); border-color: rgba(248,113,113,.3); }
+
+/* ── FORMULÁRIO PUBLICAR ──────────────────────────────────────────────────── */
+.form-publicar {
+  max-width: 700px;
+}
+.form-publicar__titulo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: .25rem;
+}
+.form-publicar__sub {
+  color: var(--text-2);
+  font-size: .88rem;
+  margin-bottom: 1.5rem;
+}
+
+.tipo-select-grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-bottom: 1.5rem;
+}
+.tipo-select-op {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .5rem 1rem;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+  user-select: none;
+}
+.tipo-select-op:hover { border-color: var(--border-strong); color: var(--text); }
+.tipo-select-op.selecionado { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.form-campo {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+.form-campo--full { grid-column: 1 / -1; }
+.form-campo label {
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.form-label-opt {
+  font-weight: 400;
+  color: var(--text-3);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.form-campo input,
+.form-campo select,
+.form-campo textarea {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .92rem;
+  padding: .65rem .9rem;
+  outline: none;
+  resize: vertical;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-campo input:focus,
+.form-campo select:focus,
+.form-campo textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-dim);
+}
+.form-campo input::placeholder,
+.form-campo textarea::placeholder { color: var(--text-3); }
+.form-campo select option { background: var(--bg-2); }
+.form-campo__dica { font-size: .78rem; color: var(--text-3); }
+
+.simulado-aviso {
+  background: rgba(129,140,248,0.08);
+  border: 1px solid rgba(129,140,248,0.25);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-size: .85rem;
+  padding: .7rem 1rem;
+  line-height: 1.5;
+}
+
+.btn--publicar {
+  margin-top: 1.25rem;
+  padding: .75rem 2rem;
+  font-size: .95rem;
+}
+
+/* Mensagens do formulário */
+.pub-msg {
+  border-radius: var(--radius-sm);
+  font-size: .85rem;
+  padding: .65rem .9rem;
+  margin-bottom: 1rem;
+}
+.pub-msg--erro    { background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.3); color: var(--danger); }
+.pub-msg--sucesso { background: rgba(52,211,153,.08);  border: 1px solid rgba(52,211,153,.3);  color: var(--success); }
+
+/* ── RESPONSIVO FORMULÁRIO ─────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-campo--full { grid-column: 1; }
+  .prof-stats { gap: .6rem; }
+  .prof-stat { min-width: 80px; padding: .75rem 1rem; }
+  .prof-stat__num { font-size: 1.5rem; }
+}
