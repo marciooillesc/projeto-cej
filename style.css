@@ -22,6 +22,7 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 /* ── DESIGN TOKENS ── */
@@ -79,6 +80,8 @@ body {
   justify-content: center;
   z-index: 100;
   transition: opacity var(--transition-slow), transform var(--transition-slow);
+  overscroll-behavior: none;
+  touch-action: pan-x pan-y;
 }
 
 .tela-inicial.saindo {
