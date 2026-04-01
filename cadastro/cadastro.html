@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro</title>
+</head>
+<body>
+
+<h2>Cadastro</h2>
+
+<input id="nome" placeholder="Nome">
+<input id="email" placeholder="Email">
+<input id="senha" type="password" placeholder="Senha">
+
+<select id="tipo">
+  <option value="aluno">Aluno</option>
+  <option value="professor">Professor</option>
+</select>
+
+<button id="btn">Cadastrar</button>
+
+<script type="module">
+import { supabase } from "../modules/supabase.js";
+
+document.getElementById("btn").onclick = async () => {
+
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  const tipo = document.getElementById("tipo").value;
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: senha
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await supabase.from("usuarios").insert({
+    id: data.user.id,
+    nome,
+    tipo,
+    status: "pendente"
+  });
+
+  alert("Cadastro enviado! Aguarde aprovação.");
+};
+</script>
+
+</body>
+</html>

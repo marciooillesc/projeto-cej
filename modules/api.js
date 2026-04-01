@@ -4,7 +4,7 @@
  * Trocar API_URL pela URL real do Web App.
  */
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbySFUJ-ApoxwwG5EaoAcORbL2iaPj_r29-Xssi22ppxjKQidkU6aNikBmDh5eXvkswUGg/exec';
+const API_URL = '
 
 // Cache simples em memória para evitar requisições repetidas
 const _cache = new Map();

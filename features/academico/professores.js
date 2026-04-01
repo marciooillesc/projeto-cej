@@ -28,7 +28,7 @@ const NIVEIS = [
 
 const LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbySFUJ-ApoxwwG5EaoAcORbL2iaPj_r29-Xssi22ppxjKQidkU6aNikBmDh5eXvkswUGg/exec';
+const API_URL = '
 
 // Helper: label com asterisco de obrigatório
 const LABEL_OBR = texto => `${texto} <span style="color:var(--danger)">*</span>`;
@@ -215,7 +215,7 @@ function _renderSenha(container, professores) {
   const input = container.querySelector('#input-senha');
   const erro  = container.querySelector('#senha-erro');
   const confirmar = () => {
-    if (input.value === 'cej1998') {
+    if (input.value === 'REMOVIDO') {
       _renderFormulario(container, professores);
     } else {
       erro.style.display = '';
