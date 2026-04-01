@@ -1,1 +1,0 @@
-export function sendMessage(){ console.log('IA funcionando'); }
