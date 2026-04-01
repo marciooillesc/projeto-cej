@@ -250,3 +250,44 @@ function _bindBotoesInicio() {
 function _bindBotaoVoltar() {
   btnVoltar?.addEventListener('click', _voltarInicio);
 }
+import { login } from "./modules/auth.js";
+import { setEstado } from "./modules/state.js";
+
+function abrirLogin() {
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div style="max-width:400px;margin:80px auto;text-align:center">
+      <h2>Área Acadêmica</h2>
+
+      <input id="email" placeholder="Email" style="display:block;width:100%;margin:10px 0;padding:10px"/>
+      <input id="senha" type="password" placeholder="Senha" style="display:block;width:100%;margin:10px 0;padding:10px"/>
+
+      <button id="btn-login" style="padding:10px 20px">Entrar</button>
+
+      <p style="margin-top:10px">
+        Não tem conta? <a href="/cadastro">Cadastre-se</a>
+      </p>
+    </div>
+  `;
+
+  document.getElementById("btn-login").onclick = async () => {
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    const user = await login(email, senha);
+
+    if (!user) return;
+
+    if (user.status !== "aprovado") {
+      alert("Aguardando aprovação");
+      return;
+    }
+
+    setEstado({ usuario: user });
+
+    // entra no acadêmico após login
+    setEstado({ modo: "academico" });
+    navegar("professores");
+  };
+}
