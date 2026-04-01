@@ -1,101 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RPR Academy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<title>Educação Digital</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
 
-  <!-- TELA INICIAL -->
-  <div id="tela-inicial" class="tela-inicial">
-    <div class="tela-inicial__bg">
-      <div class="tela-inicial__grid"></div>
-      <div class="tela-inicial__glow"></div>
-    </div>
-    <div class="tela-inicial__content">
-      <div class="tela-inicial__logo">
-        <span class="tela-inicial__logo-sigla">RPR</span>
-        <div class="tela-inicial__logo-sep"></div>
-        <span class="tela-inicial__logo-nome">Educação Digital</span>
-      </div>
-      <h1 class="tela-inicial__titulo">Seja bem-vindo</em></h1>
-      <p class="tela-inicial__subtitulo">Plataforma institucional de conteúdos,<br />jogos e recursos educacionais.</p>
-      <div class="tela-inicial__botoes">
-        <button class="btn btn--hero" id="btn-jogos" data-modo="jogos">
-          <span class="btn__icon">🎮</span>
-          <span class="btn__label">Jogos</span>
-          <span class="btn__sub">Atividades interativas</span>
-        </button>
-        <button class="btn btn--hero btn--hero-secundario" id="btn-academico" data-modo="academico">
-          <span class="btn__icon">🎓</span>
-          <span class="btn__label">Acadêmico</span>
-          <span class="btn__sub">Conteúdos e materiais</span>
-        </button>
-      </div>
-    </div>
-  </div>
+<h1>Educação Digital</h1>
 
-  <!-- MODO APP -->
-  <div id="app" class="app app--oculto">
+<div class="cards">
+  <div class="card" onclick="go('jogos')">🎮 Jogos</div>
+  <div class="card" onclick="go('login')">🎓 Acadêmico 🔒</div>
+  <div class="card" onclick="go('professor')">👨‍🏫 Professor</div>
+</div>
 
-    <!-- OVERLAY MOBILE (clique fora fecha o menu) -->
-    <div id="mobile-overlay" class="mobile-overlay" aria-hidden="true"></div>
-
-    <!-- BOTÃO HAMBÚRGUER MOBILE -->
-    <button id="btn-hamburguer" class="btn-hamburguer" aria-label="Abrir menu" aria-expanded="false">
-      <span class="btn-hamburguer__linha"></span>
-      <span class="btn-hamburguer__linha"></span>
-      <span class="btn-hamburguer__linha"></span>
-    </button>
-
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="sidebar">
-      <div class="sidebar__header">
-        <button class="sidebar__voltar" id="btn-voltar" title="Voltar ao início">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div class="sidebar__marca">
-          <span class="sidebar__marca-sigla">RPR</span>
-          <span class="sidebar__marca-nome">Educação</span>
-        </div>
-      </div>
-      <div class="sidebar__modo-tag" id="sidebar-modo-tag"></div>
-      <nav class="sidebar__nav" id="sidebar-nav">
-        <!-- preenchido dinamicamente -->
-      </nav>
-      <div class="sidebar__footer">
-        <span class="sidebar__versao">v1.0.0</span>
-      </div>
-    </aside>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main id="conteudo-principal" class="conteudo-principal">
-      <div id="conteudo-view" class="conteudo-view">
-        <!-- renderizado pelo router -->
-      </div>
-    </main>
-
-  </div>
-
-  <!-- RODAPÉ FIXO GLOBAL — aparece em todas as telas -->
-  <footer class="rodape-fixo">
-    <span>© 2026 RPR Academy · Prof. Márcio Oilles</span>
-    <a class="rodape-fixo__link"
-       href="https://wa.me/5541997085241?text=Olá%20Prof.%20Márcio!%20Vi%20a%20plataforma%20RPR%20Academy%20e%20gostaria%20de%20um%20site."
-       target="_blank">
-      💬 Quer um site? Entre em contato
-    </a>
-  </footer>
-
-  <script type="module" src="main.js"></script>
-  <!-- Menu mobile — carregado após main.js -->
-  <script type="module" src="mobile-menu.js"></script>
+<script src="config/supabase.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
