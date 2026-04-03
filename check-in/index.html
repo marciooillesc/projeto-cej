@@ -363,12 +363,17 @@
       .from('usuarios')
       .select('id, nome, tipo, status, turma')
       .eq('email', email)
-      .single();
+      .maybeSingle();
 
     btn.disabled = false;
     btn.textContent = '🔍 Continuar';
 
-    if (error || !usuario) {
+    if (error) {
+      mostrarErroAluno('Erro ao buscar: ' + error.message + ' (code: ' + error.code + ')');
+      return;
+    }
+
+    if (!usuario) {
       mostrarErroAluno('E-mail não encontrado. Verifique se é o mesmo usado no cadastro.');
       return;
     }
