@@ -295,14 +295,21 @@ function _atualizarBotaoAcademico(perfil) {
 /** Entra no modo acadêmico roteando por tipo */
 function _entrarAcademico(usuario) {
   _ativarModo('academico');
-  // rota padrão por tipo
   setTimeout(() => {
     if (usuario.tipo === 'professor' || usuario.tipo === 'admin') {
       navegar('professores');
     } else {
       navegar('alunos');
     }
-  }, 400); // aguarda animação de transição
+  }, 400);
+}
+
+/** Admin escolhe entrar como professor ou aluno */
+function _entrarAcademicoComModo(usuario, modo) {
+  _ativarModo('academico');
+  setTimeout(() => {
+    navegar(modo === 'aluno' ? 'alunos' : 'professores');
+  }, 400);
 }
 
 /** Modal de login estilizado */
@@ -341,6 +348,25 @@ function _abrirModalLogin() {
           Não tem conta?
           <a href="/cadastro" class="modal-login__link">Cadastre-se</a>
         </p>
+      </div>
+
+      <!-- TELA 3: SELETOR DE MODO (só admin) -->
+      <div id="ml-tela-modo" style="display:none">
+        <div class="modal-login__logo">
+          <span class="modal-login__sigla">RPR</span>
+          <span class="modal-login__nome">Como deseja entrar?</span>
+        </div>
+        <p class="modal-login__desc">Escolha o modo de acesso para esta sessão</p>
+
+        <button class="modal-login__btn" id="ml-modo-professor" style="margin-bottom:.75rem">
+          🎓 Entrar como Professor
+        </button>
+        <button class="modal-login__btn" id="ml-modo-aluno" style="background:var(--surface-2);color:var(--text-1);border:1px solid var(--border);margin-bottom:.75rem">
+          🎒 Entrar como Aluno
+        </button>
+        <button class="modal-login__btn" id="ml-modo-admin" style="background:transparent;color:var(--text-2);font-size:.85rem;padding:.5rem">
+          ⚙️ Ir para o Admin
+        </button>
       </div>
 
       <!-- TELA 2: ESQUECI SENHA -->
@@ -422,8 +448,33 @@ function _abrirModalLogin() {
 
     const perfil = resultado.perfil;
     _atualizarBotaoAcademico(perfil);
+
+    // Admin vê o seletor de modo antes de entrar
+    if (perfil.isAdmin) {
+      document.getElementById('ml-tela-login').style.display = 'none';
+      document.getElementById('ml-tela-modo').style.display = '';
+      return; // não fecha o modal ainda
+    }
+
     fechar();
     _entrarAcademico(perfil);
+  });
+
+  // Botões do seletor de modo (admin)
+  document.getElementById('ml-modo-professor').addEventListener('click', () => {
+    const perfil = { ...getEstado().usuario, _modoAtivo: 'professor' };
+    fechar();
+    _entrarAcademicoComModo(perfil, 'professor');
+  });
+
+  document.getElementById('ml-modo-aluno').addEventListener('click', () => {
+    fechar();
+    _entrarAcademicoComModo(getEstado().usuario, 'aluno');
+  });
+
+  document.getElementById('ml-modo-admin').addEventListener('click', () => {
+    fechar();
+    window.location.href = '/admin/';
   });
 
   [document.getElementById('ml-email'), document.getElementById('ml-senha')]
