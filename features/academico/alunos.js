@@ -4,7 +4,7 @@
  */
 
 import { getEstado } from '../../modules/state.js';
-import { buscarConteudos, filtrarPorTurma, listarTurmas } from '../../modules/api.js';
+import { buscarConteudos, filtrarPorTurma } from '../../modules/api.js';
 import {
   htmlLoading, htmlVazio, htmlErro, htmlBadgeTipo, formatarData,
   htmlDetalheConteudo, inicializarSimulado
@@ -19,7 +19,11 @@ export async function renderAlunos(container) {
   }
   container.innerHTML = htmlLoading('Carregando atividades…');
   try {
-    const conteudos = await buscarConteudos();
+    const todosConteudos = await buscarConteudos();
+    // Filtra automaticamente pela turma do aluno
+    const conteudos = usuario.turma
+      ? todosConteudos.filter(c => c.turma === usuario.turma)
+      : todosConteudos;
     _renderDashboard(container, conteudos, usuario);
   } catch (e) {
     container.innerHTML = htmlErro(e.message);
@@ -28,14 +32,13 @@ export async function renderAlunos(container) {
 
 /* ── DASHBOARD ──────────────────────────────────────────────────────────────── */
 function _renderDashboard(container, conteudos, usuario) {
-  const turmas    = listarTurmas(conteudos);
   const simulados = conteudos.filter(c => c.tipo === 'simulado').length;
 
   container.innerHTML = `
     <div class="page-header">
       <span class="page-header__eyebrow">Aluno</span>
       <h1 class="page-header__titulo">Olá, ${_esc(usuario.nome.split(' ')[0])} 📚</h1>
-      <p class="page-header__desc">Aqui estão seus conteúdos e atividades disponíveis.</p>
+      <p class="page-header__desc">${usuario.turma ? `Turma: <strong>${_esc(usuario.turma)}</strong>` : 'Aqui estão seus conteúdos e atividades disponíveis.'}</p>
     </div>
 
     <div class="prof-stats">
@@ -48,15 +51,9 @@ function _renderDashboard(container, conteudos, usuario) {
         <span class="prof-stat__label">Simulados</span>
       </div>
       <div class="prof-stat">
-        <span class="prof-stat__num">${turmas.length}</span>
-        <span class="prof-stat__label">Turmas</span>
+        <span class="prof-stat__num">${conteudos.filter(c=>c.tipo==='atividade').length}</span>
+        <span class="prof-stat__label">Atividades</span>
       </div>
-    </div>
-
-    <!-- Filtro por turma -->
-    <div class="filtros-wrap" id="filtros-turma">
-      <button class="filtro-chip ativo" data-turma="">Todas as turmas</button>
-      ${turmas.map(t => `<button class="filtro-chip" data-turma="${_esc(t)}">${_esc(t)}</button>`).join('')}
     </div>
 
     <!-- Tabs por tipo -->
@@ -107,12 +104,10 @@ function _htmlGrid(conteudos) {
 
 /* ── FILTROS ─────────────────────────────────────────────────────────────────── */
 function _bindFiltros(container, conteudos, usuario) {
-  let turmaAtiva = '';
   let tipoAtivo  = 'todos';
 
   function atualizar() {
     let lista = conteudos;
-    if (turmaAtiva) lista = filtrarPorTurma(lista, turmaAtiva);
     if (tipoAtivo !== 'todos') lista = lista.filter(c => c.tipo === tipoAtivo);
 
     const painel = document.getElementById('aluno-painel');
@@ -120,15 +115,7 @@ function _bindFiltros(container, conteudos, usuario) {
     _bindItens(container, lista, conteudos, usuario);
   }
 
-  // Filtro turma
-  container.querySelectorAll('[data-turma]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      container.querySelectorAll('[data-turma]').forEach(b => b.classList.remove('ativo'));
-      btn.classList.add('ativo');
-      turmaAtiva = btn.dataset.turma;
-      atualizar();
-    });
-  });
+  // Turma já filtrada automaticamente pelo perfil do aluno
 
   // Filtro tipo
   container.querySelectorAll('.prof-tab').forEach(tab => {
