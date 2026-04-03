@@ -373,6 +373,20 @@
     // INICIAR
     // ────────────────────────────────────────────────────────────────────────────
 
+    // ────────────────────────────────────────────────────────────────────────────
+    // UTILITÁRIO: MOSTRAR ERRO NA TELA DE CARREGAMENTO
+    // ────────────────────────────────────────────────────────────────────────────
+
+    function mostrarErro(telaId, titulo, mensagem) {
+      const tela = document.getElementById(telaId);
+      tela.innerHTML = `
+        <div class="logo">⚠️</div>
+        <h1>${titulo}</h1>
+        <p class="subtitulo">${mensagem}</p>
+        <button class="botao" onclick="window.location.href='/'">🏠 Ir para o início</button>
+      `;
+    }
+
     inicializar();
   </script>
 </body>
